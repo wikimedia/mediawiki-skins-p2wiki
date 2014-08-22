@@ -27,8 +27,9 @@ if( !defined( 'MEDIAWIKI' ) ) die( "This is an extension to the MediaWiki packag
 $wgExtensionCredits['skin'][] = array (
 	'path' => __FILE__,
 	'name' => 'P2 wiki',
-	'author' => array('[http://automattic.com/ Automattic]', '[http://mediawiki.org/wiki/User:Dantman Daniel Friesen]'),
-	'description' => "P2 wiki, a wiki skin based on the [http://p2theme.com/ P2] WordPress theme.",
+	'author' => array('[http://automattic.com/ Automattic]', '[https://www.mediawiki.org/wiki/User:Dantman Daniel Friesen]'),
+	'description-msg' => 'p2wiki-desc',
+	'url' => 'https://www.mediawiki.org/wiki/Skin:P2_wiki'
 );
 
 $skinID = basename(dirname(__FILE__));
