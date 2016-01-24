@@ -22,21 +22,15 @@
  * require_once("$IP/skins/p2wiki/p2wiki.php");
  */
 
-if( !defined( 'MEDIAWIKI' ) ) die( "This is an extension to the MediaWiki package and cannot be run standalone." );
-
-$wgExtensionCredits['skin'][] = array (
-	'path' => __FILE__,
-	'name' => 'P2 wiki',
-	'author' => array('[http://automattic.com/ Automattic]', '[https://www.mediawiki.org/wiki/User:Dantman Daniel Friesen]'),
-	'description-msg' => 'p2wiki-desc',
-	'url' => 'https://www.mediawiki.org/wiki/Skin:P2_wiki'
-);
-
-$skinID = basename(dirname(__FILE__));
-$wgValidSkinNames[$skinID] = 'P2wiki';
-$wgAutoloadClasses['SkinP2wiki'] = dirname(__FILE__).'/P2wiki.skin.php';
-$wgMessagesDirs['SkinP2wiki'] = __DIR__ . '/i18n';
-$wgExtensionMessagesFiles['SkinP2wiki'] = dirname(__FILE__).'/P2wiki.i18n.php';
-$wgResourceModules["skins.$skinID"] = array(
-	'styles' => array( "skins/$skinID/style/screen.css" => array( 'media' => 'screen' ) )
-);
+if ( function_exists( 'wfLoadSkin' ) ) {
+	wfLoadSkin( 'p2wiki' );
+	// Keep i18n globals so mergeMessageFileList.php doesn't break
+	$wgMessagesDirs['p2wiki'] = __DIR__ . '/i18n';
+	/*wfWarn(
+		'Deprecated PHP entry point used for p2wiki skin. Please use wfLoadSkin instead, ' .
+		'see https://www.mediawiki.org/wiki/Extension_registration for more details.'
+	);*/
+	return;
+} else {
+	die( 'This version of the p2wiki skin requires MediaWiki 1.25+' );
+}
