@@ -10,7 +10,7 @@ class SkinP2wiki extends SkinTemplate {
 	var $template = 'P2wikiTemplate', $useHeadElement = true;
 
 	function __construct() {
-		$this->skinname = $this->stylename = basename(dirname(__FILE__));
+		$this->skinname = $this->stylename = basename( __DIR__ );
 	}
 
 	/**
