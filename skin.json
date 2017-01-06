@@ -11,7 +11,8 @@
 		"p2wiki": "P2wiki"
 	},
 	"AutoloadClasses": {
-		"SkinP2wiki": "P2wiki.skin.php"
+		"SkinP2wiki": "P2wiki.skin.php",
+		"P2wikiTemplate": "P2wiki.skin.php"
 	},
 	"MessagesDirs": {
 		"SkinP2wiki": [
