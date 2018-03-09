@@ -153,7 +153,7 @@ class P2wikiTemplate extends BaseTemplate {
 			endforeach;
 			// Avoid PHP 7.1 warning of passing $this by reference
 			$template = $this;
-			wfRunHooks( 'SkinTemplateToolboxEnd', array( &$template ) );
+			Hooks::run( 'SkinTemplateToolboxEnd', array( &$template ) );
 ?>
 				</ul>
 			</li>
