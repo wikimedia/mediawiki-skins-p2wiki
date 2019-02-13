@@ -47,7 +47,7 @@ class P2wikiTemplate extends BaseTemplate {
 		$action = $wgRequest->getText( 'action' );
 
 		// Suppress warnings to prevent notices about missing indexes in $this->data
-		wfSuppressWarnings();
+		Wikimedia\suppressWarnings();
 
 		// Generate additional footer links
 		$footerlinks = $this->data["footerlinks"];
@@ -338,7 +338,7 @@ class P2wikiTemplate extends BaseTemplate {
 	</body>
 </html>
 <?php
-		wfRestoreWarnings();
+		Wikimedia\restoreWarnings();
 	}
 
 }
