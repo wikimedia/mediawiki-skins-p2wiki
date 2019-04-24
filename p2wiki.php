@@ -1,7 +1,7 @@
 <?php
 /**
  * @author automattic http://wordpress.org/extend/themes/profile/automattic
- * @author Daniel Friesen (http://mediawiki.org/wiki/User:Dantman) <mediawiki@danielfriesen.name>
+ * @author Daniel Friesen (https://mediawiki.org/wiki/User:Dantman) <mediawiki@danielfriesen.name>
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License 2.0 or later
  *
  * This program is free software; you can redistribute it and/or
