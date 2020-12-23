@@ -11,14 +11,8 @@ class SkinP2wiki extends SkinTemplate {
 
 	function __construct() {
 		parent::__construct( ...func_get_args() );
+		$out = $this->getOutput();
 		$this->skinname = $this->stylename = basename( __DIR__ );
-	}
-
-	/**
-	 * @param $out OutputPage object
-	 */
-	function setupSkinUserCss( OutputPage $out ){
-		parent::setupSkinUserCss( $out );
 		$out->addModuleStyles( "skins.{$this->stylename}" );
 	}
 
@@ -105,9 +99,9 @@ class P2wikiTemplate extends BaseTemplate {
 				echo ' | ';
 			}
 			$first = false; ?>
-		<span id="<?php echo Sanitizer::escapeId( "pt-$key" ) ?>"<?php
+		<span id="<?php echo Sanitizer::escapeIdForAttribute( "pt-$key" ) ?>"<?php
 			if ($item['active']) { ?> class="active"<?php } ?>><a href="<?php
-		echo htmlspecialchars($item['href']) ?>"<?php echo $skin->tooltipAndAccesskey('pt-'.$key) ?><?php
+		echo htmlspecialchars($item['href']) ?>"<?php echo Linker::tooltipAndAccesskeyAttribs('pt-'.$key) ?><?php
 		if(!empty($item['class'])) { ?> class="<?php
 		echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
 		echo htmlspecialchars($item['text']) ?></a></span>
@@ -119,7 +113,7 @@ class P2wikiTemplate extends BaseTemplate {
 <div id="wrapper"<?php if ( $isWide ) { ?> class="<?php echo $isWide; ?>"<?php } ?>>
 	<div id="sidebar">
 		<ul>
-			<li id='p-search'<?php echo $this->skin->tooltip('p-search') ?>>
+			<li id='p-search'<?php echo Linker::tooltipAndAccesskeyAttribs('p-search') ?>>
 				<h2><label for="searchInput"><?php $this->msg('search') ?></label></h2>
 				<form role="search" id="searchform" action="<?php $this->text('wgScript') ?>">
 					<input type='hidden' name="title" value="<?php $this->text('searchtitle') ?>"/>
@@ -127,12 +121,11 @@ class P2wikiTemplate extends BaseTemplate {
 <?php
 						echo Html::input( 'search',
 							isset( $this->data['search'] ) ? $this->data['search'] : '', 'search',
-							array(
+							[
 								'id' => 'search-for',
-								'title' => $this->skin->titleAttrib( 'search' ),
-								'accesskey' => $this->skin->accesskey( 'search' )
-							) ); ?>
-						<input type='submit' name="go" id="searchsubmit" value="<?php $this->msg('searcharticle') ?>"<?php echo $this->skin->tooltipAndAccesskey( 'search-go' ); ?> />
+							] + Linker::tooltipAndAccesskeyAttribs( 'search' )
+						); ?>
+						<input type='submit' name="go" id="searchsubmit" value="<?php $this->msg('searcharticle') ?>"<?php echo Linker::tooltipAndAccesskeyAttribs( 'search-go' ); ?> />
 					</div>
 				</form>
 			</li>
@@ -175,7 +168,7 @@ class P2wikiTemplate extends BaseTemplate {
 <?php
 			}
 		} else { ?>
-			<li id='<?php echo Sanitizer::escapeId( "p-$boxName" ) ?>'<?php echo $this->skin->tooltip('p-'.$boxName) ?>>
+			<li id='<?php echo Sanitizer::escapeIdForAttribute( "p-$boxName" ) ?>'<?php echo Linker::tooltipAndAccesskeyAttribs('p-'.$boxName) ?>>
 				<h2><?php $out = wfMessage( $boxName )->text(); if (wfMessage($boxName, $out)->isDisabled()) echo htmlspecialchars($boxName); else echo htmlspecialchars($out); ?></h2>
 <?php
 				if ( is_array( $cont ) ): ?>
@@ -223,16 +216,16 @@ class P2wikiTemplate extends BaseTemplate {
 					}
 					$first = false;
 					echo '
-				 <a id="' . Sanitizer::escapeId( "ca-$key" ) . '"';
+				 <a id="' . Sanitizer::escapeIdForAttribute( "ca-$key" ) . '"';
 					if( $tab['class'] ) {
 						echo ' class="'.htmlspecialchars($tab['class']).'"';
 					}
 					echo ' href="'.htmlspecialchars($tab['href']).'"';
 				 	if( in_array( $action, array( 'edit', 'submit' ) )
 				 	&& in_array( $key, array( 'edit', 'watch', 'unwatch' ))) {
-				 		echo $skin->tooltip( "ca-$key" );
+				 		echo Linker::tooltipAndAccesskeyAttribs( "ca-$key" );
 				 	} else {
-				 		echo $skin->tooltipAndAccesskey( "ca-$key" );
+				 		echo Linker::tooltipAndAccesskeyAttribs( "ca-$key" );
 				 	}
 				 	echo '>'.htmlspecialchars($tab['text'])."</a>\n";
 				} ?>
@@ -252,16 +245,16 @@ class P2wikiTemplate extends BaseTemplate {
 					}
 					$first = false;
 					echo '
-				 <a id="' . Sanitizer::escapeId( "ca-$key" ) . '"';
+				 <a id="' . Sanitizer::escapeIdForAttribute( "ca-$key" ) . '"';
 					if( $tab['class'] ) {
 						echo ' class="'.htmlspecialchars($tab['class']).'"';
 					}
 					echo ' href="'.htmlspecialchars($tab['href']).'"';
 				 	if( in_array( $action, array( 'edit', 'submit' ) )
 				 	&& in_array( $key, array( 'edit', 'watch', 'unwatch' ))) {
-				 		echo $skin->tooltip( "ca-$key" );
+				 		echo Linker::tooltipAndAccesskeyAttribs( "ca-$key" );
 				 	} else {
-				 		echo $skin->tooltipAndAccesskey( "ca-$key" );
+				 		echo Linker::tooltipAndAccesskeyAttribs( "ca-$key" );
 				 	}
 				 	echo '>'.htmlspecialchars($tab['text'])."</a>\n";
 				} ?>
@@ -339,7 +332,6 @@ class P2wikiTemplate extends BaseTemplate {
 	</body>
 </html>
 <?php
-		Wikimedia\restoreWarnings();
 	}
 
 }

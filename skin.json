@@ -29,6 +29,7 @@
 	},
 	"ResourceModules": {
 		"skins.p2wiki": {
+			"class": "ResourceLoaderSkinModule",
 			"styles": {
 				"style/screen.css": {
 					"media": "screen"
