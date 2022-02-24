@@ -6,13 +6,13 @@
 	],
 	"descriptionmsg": "p2wiki-desc",
 	"namemsg": "skinname-p2wiki",
-	"url": "https://www.mediawiki.org/wiki/Skin:P2_wiki",
+	"url": "https://www.mediawiki.org/wiki/Skin:P2wiki",
 	"type": "skin",
 	"ValidSkinNames": {
 		"p2wiki": "P2wiki"
 	},
 	"requires": {
-		"MediaWiki": ">= 1.31.0"
+		"MediaWiki": ">= 1.34.0"
 	},
 	"AutoloadClasses": {
 		"SkinP2wiki": "P2wiki.skin.php",

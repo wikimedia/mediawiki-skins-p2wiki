@@ -1,5 +1,7 @@
 <?php
 
+use Wikimedia\AtEase\AtEase;
+
 /**
  * SkinTemplate class for p2wiki skin
  * @ingroup Skins
@@ -38,11 +40,11 @@ class P2wikiTemplate extends BaseTemplate {
 	public function execute() {
 		global $wgRequest;
 
-		$skin = $this->skin = $this->data['skin'];
+		$this->skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
 
 		// Suppress warnings to prevent notices about missing indexes in $this->data
-		Wikimedia\suppressWarnings();
+		AtEase::suppressWarnings();
 
 		// Generate additional footer links
 		$footerlinks = $this->data["footerlinks"];
@@ -332,6 +334,8 @@ class P2wikiTemplate extends BaseTemplate {
 	</body>
 </html>
 <?php
+
+		AtEase::restoreWarnings();
 	}
 
 }
