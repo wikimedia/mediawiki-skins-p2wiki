@@ -9,13 +9,22 @@
 	"url": "https://www.mediawiki.org/wiki/Skin:P2wiki",
 	"type": "skin",
 	"ValidSkinNames": {
-		"p2wiki": "P2wiki"
+		"p2wiki": {
+			"class": "SkinTemplate",
+			"args": [
+				{
+					"name": "p2wiki",
+					"bodyOnly": true,
+					"template": "P2wikiTemplate",
+					"styles": [ "skins.p2wiki" ]
+				}
+			]
+		}
 	},
 	"requires": {
-		"MediaWiki": ">= 1.34.0"
+		"MediaWiki": ">= 1.39.0"
 	},
 	"AutoloadClasses": {
-		"SkinP2wiki": "P2wiki.skin.php",
 		"P2wikiTemplate": "P2wiki.skin.php"
 	},
 	"MessagesDirs": {
