@@ -1,26 +1,5 @@
 <?php
 
-use Wikimedia\AtEase\AtEase;
-
-/**
- * SkinTemplate class for p2wiki skin
- * @ingroup Skins
- */
-class SkinP2wiki extends SkinTemplate {
-
-	/* Functions */
-	var $template = 'P2wikiTemplate';
-
-	function __construct() {
-		parent::__construct( ...func_get_args() );
-		$out = $this->getOutput();
-		$this->skinname = $this->stylename = basename( __DIR__ );
-		$out->addModuleStyles( "skins.{$this->stylename}" );
-	}
-
-
-}
-
 /**
  * QuickTemplate class for p2wiki skin
  * @ingroup Skins
@@ -42,9 +21,6 @@ class P2wikiTemplate extends BaseTemplate {
 
 		$this->skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
-
-		// Suppress warnings to prevent notices about missing indexes in $this->data
-		AtEase::suppressWarnings();
 
 		// Generate additional footer links
 		$footerlinks = $this->data["footerlinks"];
@@ -83,8 +59,7 @@ class P2wikiTemplate extends BaseTemplate {
 		elseif ( $action == "edit" )
 			$isWide = "wide";
 
-		// Output HTML Page
-		$this->html( 'headelement' ); ?>
+		// Output HTML Page ?>
 <div id="header"<?php if ( $isWide ) { ?> class="<?php echo $isWide; ?>"<?php } ?>>
 
 	<div class="sleeve">
@@ -100,12 +75,23 @@ class P2wikiTemplate extends BaseTemplate {
 			if ( !$first ) {
 				echo ' | ';
 			}
-			$first = false; ?>
+			$first = false;
+			$active = $item['active'] ?? false;
+			if ( !is_string( $key ) ) {
+				var_dump( $key );
+				die;
+
+			}
+			$classDefinition = $item['class'] ?? [];
+			$classString = is_array( $classDefinition ) ? implode( ' ', $classDefinition ) : $classDefinition;
+		?>
 		<span id="<?php echo Sanitizer::escapeIdForAttribute( "pt-$key" ) ?>"<?php
-			if ($item['active']) { ?> class="active"<?php } ?>><a href="<?php
-		echo htmlspecialchars($item['href']) ?>"<?php echo Linker::tooltipAndAccesskeyAttribs('pt-'.$key) ?><?php
-		if(!empty($item['class'])) { ?> class="<?php
-		echo htmlspecialchars($item['class']) ?>"<?php } ?>><?php
+			if ($active) { ?> class="active"<?php } ?>><a href="<?php
+		echo htmlspecialchars($item['href']) ?>"
+		<?php echo Html::expandAttributes( Linker::tooltipAndAccesskeyAttribs('pt-'.$key) ) ?>
+		<?php
+		if($classString) { ?> class="<?php
+		echo htmlspecialchars($classString) ?>"<?php } ?>><?php
 		echo htmlspecialchars($item['text']) ?></a></span>
 <?php	} ?>
 	</div>
@@ -115,7 +101,7 @@ class P2wikiTemplate extends BaseTemplate {
 <div id="wrapper"<?php if ( $isWide ) { ?> class="<?php echo $isWide; ?>"<?php } ?>>
 	<div id="sidebar">
 		<ul>
-			<li id='p-search'<?php echo Linker::tooltipAndAccesskeyAttribs('p-search') ?>>
+			<li id='p-search'<?php echo Html::expandAttributes( Linker::tooltipAndAccesskeyAttribs('p-search') ) ?>>
 				<h2><label for="searchInput"><?php $this->msg('search') ?></label></h2>
 				<form role="search" id="searchform" action="<?php $this->text('wgScript') ?>">
 					<input type='hidden' name="title" value="<?php $this->text('searchtitle') ?>"/>
@@ -127,7 +113,8 @@ class P2wikiTemplate extends BaseTemplate {
 								'id' => 'search-for',
 							] + Linker::tooltipAndAccesskeyAttribs( 'search' )
 						); ?>
-						<input type='submit' name="go" id="searchsubmit" value="<?php $this->msg('searcharticle') ?>"<?php echo Linker::tooltipAndAccesskeyAttribs( 'search-go' ); ?> />
+						<input type='submit' name="go" id="searchsubmit" value="<?php $this->msg('searcharticle') ?>"
+							<?php echo Html::expandAttributes( Linker::tooltipAndAccesskeyAttribs( 'search-go' ) ); ?> />
 					</div>
 				</form>
 			</li>
@@ -142,7 +129,8 @@ class P2wikiTemplate extends BaseTemplate {
 				<h2><?php $this->msg('toolbox') ?></h2>
 				<ul>
 <?php
-			foreach ( $this->getToolbox() as $key => $tbitem ): ?>
+			$toolbox = $this->data['sidebar']['TOOLBOX'] ?? [];
+			foreach ( $toolbox as $key => $tbitem ): ?>
 					<?php echo $this->makeListItem($key, $tbitem); ?>
 
 <?php
@@ -170,7 +158,9 @@ class P2wikiTemplate extends BaseTemplate {
 <?php
 			}
 		} else { ?>
-			<li id='<?php echo Sanitizer::escapeIdForAttribute( "p-$boxName" ) ?>'<?php echo Linker::tooltipAndAccesskeyAttribs('p-'.$boxName) ?>>
+			<li id='<?php echo Sanitizer::escapeIdForAttribute( "p-$boxName" ) ?>'
+				<?php echo Html::expandAttributes( Linker::tooltipAndAccesskeyAttribs('p-'.$boxName) ) ?>
+				>
 				<h2><?php $out = wfMessage( $boxName )->text(); if (wfMessage($boxName, $out)->isDisabled()) echo htmlspecialchars($boxName); else echo htmlspecialchars($out); ?></h2>
 <?php
 				if ( is_array( $cont ) ): ?>
@@ -225,11 +215,15 @@ class P2wikiTemplate extends BaseTemplate {
 					echo ' href="'.htmlspecialchars($tab['href']).'"';
 				 	if( in_array( $action, array( 'edit', 'submit' ) )
 				 	&& in_array( $key, array( 'edit', 'watch', 'unwatch' ))) {
-				 		echo Linker::tooltipAndAccesskeyAttribs( "ca-$key" );
-				 	} else {
-				 		echo Linker::tooltipAndAccesskeyAttribs( "ca-$key" );
-				 	}
-				 	echo '>'.htmlspecialchars($tab['text'])."</a>\n";
+						echo Html::expandAttributes(
+							Linker::tooltipAndAccesskeyAttribs( "ca-$key" )
+						);
+					} else {
+						echo Html::expandAttributes(
+							Linker::tooltipAndAccesskeyAttribs( "ca-$key" )
+						);
+					}
+					echo '>'.htmlspecialchars($tab['text'])."</a>\n";
 				} ?>
 			</span>
 		</h2>
@@ -254,9 +248,13 @@ class P2wikiTemplate extends BaseTemplate {
 					echo ' href="'.htmlspecialchars($tab['href']).'"';
 				 	if( in_array( $action, array( 'edit', 'submit' ) )
 				 	&& in_array( $key, array( 'edit', 'watch', 'unwatch' ))) {
-				 		echo Linker::tooltipAndAccesskeyAttribs( "ca-$key" );
+						echo Html::expandAttributes(
+							Linker::tooltipAndAccesskeyAttribs( "ca-$key" )
+						);
 				 	} else {
-				 		echo Linker::tooltipAndAccesskeyAttribs( "ca-$key" );
+						echo Html::expandAttributes(
+							Linker::tooltipAndAccesskeyAttribs( "ca-$key" )
+						);
 				 	}
 				 	echo '>'.htmlspecialchars($tab['text'])."</a>\n";
 				} ?>
@@ -322,20 +320,7 @@ class P2wikiTemplate extends BaseTemplate {
 	</p>
 	<div class="visualClear"></div>
 </div>
-
-		<?php $this->html( 'bottomscripts' ); /* JS call to runBodyOnloadHook */ ?>
-		<!-- fixalpha -->
-		<script type="<?php $this->text('jsmimetype') ?>"> if ( window.isMSIE55 ) fixalpha(); </script>
-		<!-- /fixalpha -->
-		<?php $this->html( 'reporttime' ) ?>
-		<?php if ( $this->data['debug'] ): ?>
-		<!-- Debug output: <?php $this->text( 'debug' ); ?> -->
-		<?php endif; ?>
-	</body>
-</html>
 <?php
-
-		AtEase::restoreWarnings();
 	}
 
 }
