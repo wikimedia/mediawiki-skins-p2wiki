@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 /**
  * QuickTemplate class for p2wiki skin
  * @ingroup Skins
@@ -137,7 +139,7 @@ class P2wikiTemplate extends BaseTemplate {
 			endforeach;
 			// Avoid PHP 7.1 warning of passing $this by reference
 			$template = $this;
-			Hooks::run( 'SkinTemplateToolboxEnd', array( &$template ) );
+			MediaWikiServices::getInstance()->getHookContainer()->run( 'SkinTemplateToolboxEnd', array( &$template ) );
 ?>
 				</ul>
 			</li>
