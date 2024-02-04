@@ -38,7 +38,7 @@
 	},
 	"ResourceModules": {
 		"skins.p2wiki": {
-			"class": "ResourceLoaderSkinModule",
+			"class": "MediaWiki\\ResourceLoader\\SkinModule",
 			"styles": {
 				"style/screen.css": {
 					"media": "screen"
