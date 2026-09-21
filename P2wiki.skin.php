@@ -91,12 +91,12 @@ class P2wikiTemplate extends BaseTemplate {
 		?>
 		<span id="<?php echo Sanitizer::escapeIdForAttribute( "pt-$key" ) ?>"<?php
 			if ($active) { ?> class="active"<?php } ?>><a href="<?php
-		echo htmlspecialchars($item['href']) ?>"
+		echo htmlspecialchars($item['href'] ?? '') ?>"
 		<?php echo Html::expandAttributes( Linker::tooltipAndAccesskeyAttribs('pt-'.$key) ) ?>
 		<?php
 		if($classString) { ?> class="<?php
 		echo htmlspecialchars($classString) ?>"<?php } ?>><?php
-		echo htmlspecialchars($item['text']) ?></a></span>
+		echo htmlspecialchars($item['text'] ?? '') ?></a></span>
 <?php	} ?>
 	</div>
 
@@ -213,10 +213,10 @@ class P2wikiTemplate extends BaseTemplate {
 					$first = false;
 					echo '
 				 <a id="' . Sanitizer::escapeIdForAttribute( "ca-$key" ) . '"';
-					if( $tab['class'] ) {
+					if( $tab['class'] ?? '' ) {
 						echo ' class="'.htmlspecialchars($tab['class']).'"';
 					}
-					echo ' href="'.htmlspecialchars($tab['href']).'"';
+					echo ' href="'.htmlspecialchars($tab['href'] ?? '').'"';
 				 	if( in_array( $action, array( 'edit', 'submit' ) )
 				 	&& in_array( $key, array( 'edit', 'watch', 'unwatch' ))) {
 						echo Html::expandAttributes(
@@ -227,7 +227,7 @@ class P2wikiTemplate extends BaseTemplate {
 							Linker::tooltipAndAccesskeyAttribs( "ca-$key" )
 						);
 					}
-					echo '>'.htmlspecialchars($tab['text'])."</a>\n";
+					echo '>'.htmlspecialchars($tab['text'] ?? '')."</a>\n";
 				} ?>
 			</span>
 		</h2>
@@ -246,10 +246,10 @@ class P2wikiTemplate extends BaseTemplate {
 					$first = false;
 					echo '
 				 <a id="' . Sanitizer::escapeIdForAttribute( "ca-$key" ) . '"';
-					if( $tab['class'] ) {
+					if( $tab['class'] ?? '' ) {
 						echo ' class="'.htmlspecialchars($tab['class']).'"';
 					}
-					echo ' href="'.htmlspecialchars($tab['href']).'"';
+					echo ' href="'.htmlspecialchars($tab['href'] ?? '').'"';
 				 	if( in_array( $action, array( 'edit', 'submit' ) )
 				 	&& in_array( $key, array( 'edit', 'watch', 'unwatch' ))) {
 						echo Html::expandAttributes(
@@ -260,7 +260,7 @@ class P2wikiTemplate extends BaseTemplate {
 							Linker::tooltipAndAccesskeyAttribs( "ca-$key" )
 						);
 				 	}
-				 	echo '>'.htmlspecialchars($tab['text'])."</a>\n";
+				 	echo '>'.htmlspecialchars($tab['text'] ?? '')."</a>\n";
 				} ?>
 			</div>
 			<div id="content">
