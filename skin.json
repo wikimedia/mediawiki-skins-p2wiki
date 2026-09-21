@@ -16,6 +16,16 @@
 					"name": "p2wiki",
 					"bodyOnly": true,
 					"template": "P2wikiTemplate",
+					"menus": [
+						"associated-pages",
+						"views",
+						"actions",
+						"variants",
+						"user-interface-preferences",
+						"user-page",
+						"notifications",
+						"user-menu"
+					],
 					"styles": [ "skins.p2wiki" ]
 				}
 			]

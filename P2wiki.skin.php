@@ -26,6 +26,22 @@ class P2wikiTemplate extends BaseTemplate {
 		$this->skin = $this->data['skin'];
 		$action = $wgRequest->getText( 'action' );
 
+		// This skin requests the `user-interface-preferences`, `user-page`,
+		// `notifications` and `user-menu` menus rather than the deprecated
+		// `personal` menu, so assemble the personal toolbar here, in the same
+		// order SkinTemplate::injectLegacyMenusIntoPersonalTools() used.
+		$contentNavigation = $this->data['content_navigation'];
+		$personalUrls = array_merge(
+			$contentNavigation['user-interface-preferences'],
+			$contentNavigation['user-page'],
+			$contentNavigation['notifications'],
+			$contentNavigation['user-menu']
+		);
+
+		// Core flattens every menu the skin requests into content_actions, so
+		// the personal tools would otherwise be repeated in the tab bars below.
+		$personalKeys = array_keys( $personalUrls );
+
 		// Generate additional footer links
 		$footerlinks = $this->data["footerlinks"];
 
@@ -75,7 +91,7 @@ class P2wikiTemplate extends BaseTemplate {
 	<div class="sleeve sleeve_personal"<?php $this->html('userlangattributes') ?>>
 <?php
 		$first = true;
-	 	foreach($this->data['personal_urls'] as $key => $item) {
+	 	foreach($personalUrls as $key => $item) {
 			if ( !$first ) {
 				echo ' | ';
 			}
@@ -233,6 +249,9 @@ class P2wikiTemplate extends BaseTemplate {
 				$first = true;
 				foreach($this->data['content_actions'] as $key => $tab) {
 					if ( $key == $this->skin->getTitle()->getNamespaceKey() || $key == "talk" ) {
+						continue;
+					}
+					if ( in_array( $key, $personalKeys, true ) ) {
 						continue;
 					}
 					if ( !$first ) {
