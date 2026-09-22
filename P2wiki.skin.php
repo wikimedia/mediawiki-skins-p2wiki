@@ -81,11 +81,6 @@ class P2wikiTemplate extends BaseTemplate {
 			}
 			$first = false;
 			$active = $item['active'] ?? false;
-			if ( !is_string( $key ) ) {
-				var_dump( $key );
-				die;
-
-			}
 			$classDefinition = $item['class'] ?? [];
 			$classString = is_array( $classDefinition ) ? implode( ' ', $classDefinition ) : $classDefinition;
 		?>
